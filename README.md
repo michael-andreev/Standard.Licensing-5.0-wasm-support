@@ -2,7 +2,8 @@
 [![NuGet](https://img.shields.io/nuget/dt/Standard.Licensing.svg)](https://www.nuget.org/packages/Standard.Licensing/)
 [![Build status](https://ci.appveyor.com/api/projects/status/8jjw5v89h83p80ax/branch/master?svg=true)](https://ci.appveyor.com/project/junian/standard-licensing/branch/master)
 
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/junian)
+## Note
+This project is a fork of the original work done by [Junian Triajianto](https://github.com/junian/Standard.Licensing).  I needed support for .Net 5.0.  I also have no plans to decouple the project from the `Bouncy Castle` library.
 
 ## About
 
@@ -10,16 +11,14 @@ Easy-to-use licensing library for .NET Framework, Mono, .NET Core, and Xamarin p
 
 This is project is derived from [Portable.Licensing](https://github.com/dnauck/Portable.Licensing/) library. The purpose of this fork is to add support for more .NET platforms, especially .NET Standard and .NET Core.
 
-There is also a plan to decouple from `Bouncy Castle` library and use [System.Security.Cryptography.Cng](https://www.nuget.org/packages/System.Security.Cryptography.Cng/) for modern .NET platforms.
-
 ![](https://1.bp.blogspot.com/-yv8fTM-7QdQ/WoghR2w1KJI/AAAAAAAAC28/0BGyFsS2nGoN9t2QnoXgMbiWVUwUipH1gCLcBGAs/s1600/standard-licensing-logo.png)
 
 ## Installation
 
-Get [Standard.Licensing](https://www.nuget.org/packages/Standard.Licensing/) from NuGet.
+Get [Standard.Licensing-5.0](https://www.nuget.org/packages/Standard.Licensing-5.0/) from NuGet.
 
 ```powershell
-PM> Install-Package Standard.Licensing
+PM> Install-Package Standard.Licensing-5.0
 ```
 
 ## Usage
