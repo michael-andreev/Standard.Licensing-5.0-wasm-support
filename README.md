@@ -1,6 +1,6 @@
-[![NuGet](https://img.shields.io/nuget/v/Standard.Licensing.svg)](https://www.nuget.org/packages/Standard.Licensing/)
-[![NuGet](https://img.shields.io/nuget/dt/Standard.Licensing.svg)](https://www.nuget.org/packages/Standard.Licensing/)
-[![Build status](https://ci.appveyor.com/api/projects/status/8jjw5v89h83p80ax/branch/master?svg=true)](https://ci.appveyor.com/project/junian/standard-licensing/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/Standard.Licensing-5.0.svg)](https://www.nuget.org/packages/Standard.Licensing-5.0/)
+[![NuGet](https://img.shields.io/nuget/dt/Standard.Licensing-5.0.svg)](https://www.nuget.org/packages/Standard.Licensing-5.0/)
+[![Build status](https://ci.appveyor.com/api/projects/status/wncxcbmo7i32ka6m?svg=true)](https://ci.appveyor.com/project/jshergal/standard-licensing-5-0)
 
 ## Note
 This project is a fork of the original work done by [Junian Triajianto](https://github.com/junian/Standard.Licensing).  I needed support for .Net 5.0.  I also have no plans to decouple the project from the `Bouncy Castle` library.
@@ -116,7 +116,8 @@ Make sure to call `validationFailures.ToList()` or `validationFailures.ToArray()
 ## Credits
 
 - [dnauck/Portable.Licensing](https://github.com/dnauck/Portable.Licensing/) for the original work.
+- [junian/Standard.Licensing](https://github.com/junian/Standard.Licensing) for the work to build this as a .net standard library
 
 ## License
 
-This project is licensed under [MIT License](https://github.com/junian/Standard.Licensing/blob/master/LICENSE).
+This project is licensed under [MIT License](https://github.com/jshergal/Standard.Licensing-5.0/blob/master/LICENSE).

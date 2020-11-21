@@ -9,8 +9,8 @@
     <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Owners>junian</Owners>
-    <PackageProjectUrl>https://lab.junian.net/Standard.Licensing/</PackageProjectUrl>
-    <PackageReleaseNotes>v2.0.1
+    <PackageProjectUrl>https://github.com/jshergal/Standard.Licensing-5.0</PackageProjectUrl>
+    <PackageReleaseNotes>v2.0
 
 - republish with support .Net 5.0</PackageReleaseNotes>
     <Summary>Easy-to-use cross-platform licensing library for .NET 5.0.</Summary>
@@ -19,7 +19,7 @@
     <Description>Easy-to-use licensing library for .Net 5.0</Description>
     <PackageId>Standard.Licensing-5.0</PackageId>
     <Copyright>Copyright (c) 2020</Copyright>
-    <RepositoryUrl>https://github.com/jshergal/Standard.Licensing</RepositoryUrl>
+    <RepositoryUrl>https://github.com/jshergal/Standard.Licensing-5.0</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>Standard.Licensing.snk</AssemblyOriginatorKeyFile>
@@ -32,6 +32,7 @@
     <FileVersion>2.0.1.0</FileVersion>
     <PackageIcon>standard-licensing-logo.png</PackageIcon>
     <Nullable>enable</Nullable>
+    <Product>Standard.Licensing-5.0</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
