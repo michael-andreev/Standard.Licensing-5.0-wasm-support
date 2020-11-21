@@ -10,7 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Owners>junian</Owners>
     <PackageProjectUrl>https://github.com/jshergal/Standard.Licensing-5.0</PackageProjectUrl>
-    <PackageReleaseNotes>v2.0
+    <PackageReleaseNotes>v2.0.2
 
 - republish with support .Net 5.0</PackageReleaseNotes>
     <Summary>Easy-to-use cross-platform licensing library for .NET 5.0.</Summary>
@@ -27,9 +27,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <CLSCompliant>True</CLSCompliant>
     <ReleaseVersion>1.1.5</ReleaseVersion>
-    <Version>2.0.1</Version>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
-    <FileVersion>2.0.1.0</FileVersion>
+    <Version>2.0.2</Version>
+    <AssemblyVersion>2.0.2.0</AssemblyVersion>
+    <FileVersion>2.0.2.0</FileVersion>
     <PackageIcon>standard-licensing-logo.png</PackageIcon>
     <Nullable>enable</Nullable>
     <Product>Standard.Licensing-5.0</Product>
