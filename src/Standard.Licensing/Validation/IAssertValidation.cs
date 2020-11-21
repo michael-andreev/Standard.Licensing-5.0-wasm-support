@@ -35,7 +35,7 @@ namespace Standard.Licensing.Validation
         /// <summary>
         /// Invokes the license assertion.
         /// </summary>
-        /// <returns>An array is <see cref="IValidationFailure"/> when the validation fails.</returns>
-        IEnumerable<IValidationFailure> AssertValidLicense();
+        /// <returns>An array is <see cref="ValidationFailure"/> when the validation fails.</returns>
+        IEnumerable<ValidationFailure> AssertValidLicense();
     }
 }

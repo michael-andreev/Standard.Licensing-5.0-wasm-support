@@ -97,8 +97,12 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder LicensedTo(string name, string email)
         {
-            license.Customer.Name = name;
-            license.Customer.Email = email;
+            var customer = license.Customer;
+            if (customer is not null)
+            {
+                customer.Name = name;
+                customer.Email = email;
+            }
             return this;
         }
 
@@ -111,9 +115,13 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder LicensedTo(string name, string email, Action<Customer> configureCustomer)
         {
-            license.Customer.Name = name;
-            license.Customer.Email = email;
-            configureCustomer(license.Customer);
+            var customer = license.Customer;
+            if (customer is not null)
+            {
+                customer.Name = name;
+                customer.Email = email;
+                configureCustomer(customer);
+            }
             return this;
         }
 
@@ -124,7 +132,8 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder LicensedTo(Action<Customer> configureCustomer)
         {
-            configureCustomer(license.Customer);
+            var customer = license.Customer;
+            if (customer is not null) configureCustomer(customer);
             return this;
         }
 
@@ -135,7 +144,8 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder WithProductFeatures(IDictionary<string, string> productFeatures)
         {
-            license.ProductFeatures.AddAll(productFeatures);
+            var prodFeatures = license.ProductFeatures;
+            if (prodFeatures is not null) prodFeatures.AddAll(productFeatures);
             return this;
         }
 
@@ -146,7 +156,9 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder WithProductFeatures(Action<LicenseAttributes> configureProductFeatures)
         {
-            configureProductFeatures(license.ProductFeatures);
+            var prodFeatures = license.ProductFeatures;
+            if (prodFeatures is not null) configureProductFeatures(prodFeatures);
+
             return this;
         }
 
@@ -157,7 +169,8 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder WithAdditionalAttributes(IDictionary<string, string> additionalAttributes)
         {
-            license.AdditionalAttributes.AddAll(additionalAttributes);
+            var attributes = license.AdditionalAttributes;
+            if (attributes is not null) attributes.AddAll(additionalAttributes);
             return this;
         }
 
@@ -168,7 +181,8 @@ namespace Standard.Licensing
         /// <returns>The <see cref="ILicenseBuilder"/>.</returns>
         public ILicenseBuilder WithAdditionalAttributes(Action<LicenseAttributes> configureAdditionalAttributes)
         {
-            configureAdditionalAttributes(license.AdditionalAttributes);
+            var attributes = license.AdditionalAttributes;
+            if (attributes is not null) configureAdditionalAttributes(attributes);
             return this;
         }
 
@@ -184,5 +198,7 @@ namespace Standard.Licensing
             license.Sign(privateKey, passPhrase);
             return license;
         }
+
+        string IFluentInterface.ToString() => ToString() ?? string.Empty;
     }
 }

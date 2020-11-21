@@ -29,38 +29,22 @@ using Org.BouncyCastle.Security;
 
 namespace Standard.Licensing.Security.Cryptography
 {
+    public enum SupportedKeySizes
+    {
+        KeySize192 = 192,
+        KeySize224 = 224,
+        KeySize239 = 239,
+        KeySize256 = 256,
+        KeySize384 = 384,
+        KeySize521 = 521,
+    }
+
     /// <summary>
     /// Represents a generator for signature keys of <see cref="License"/>.
     /// </summary>
     public class KeyGenerator
     {
         private readonly IAsymmetricCipherKeyPairGenerator keyGenerator;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KeyGenerator"/> class
-        /// with a key size of 256 bits.
-        /// </summary>
-        public KeyGenerator()
-            : this(256)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="KeyGenerator"/> class
-        /// with the specified key size.
-        /// </summary>
-        /// <remarks>Following key sizes are supported:
-        /// - 192
-        /// - 224
-        /// - 239
-        /// - 256 (default)
-        /// - 384
-        /// - 521</remarks>
-        /// <param name="keySize">The key size.</param>
-        public KeyGenerator(int keySize)
-            : this(keySize, SecureRandom.GetSeed(32))
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyGenerator"/> class
@@ -75,12 +59,13 @@ namespace Standard.Licensing.Security.Cryptography
         /// - 521</remarks>
         /// <param name="keySize">The key size.</param>
         /// <param name="seed">The seed.</param>
-        public KeyGenerator(int keySize, byte[] seed)
+        public KeyGenerator(SupportedKeySizes keySize = SupportedKeySizes.KeySize256, byte[]? seed = null)
         {
             var secureRandom = SecureRandom.GetInstance("SHA256PRNG");
-            secureRandom.SetSeed(seed);
+            if (seed is null) secureRandom.GenerateSeed(32);
+            else secureRandom.SetSeed(seed);
 
-            var keyParams = new KeyGenerationParameters(secureRandom, keySize);
+            var keyParams = new KeyGenerationParameters(secureRandom, (int)keySize);
             keyGenerator = new ECKeyPairGenerator();
             keyGenerator.Init(keyParams);
         }

@@ -32,7 +32,7 @@ namespace Standard.Licensing
     /// </summary>
     public class Customer : LicenseAttributes
     {
-        internal Customer(XElement xmlData)
+        internal Customer(XElement? xmlData)
             : base(xmlData, "CustomerData")
         {
         }
@@ -42,8 +42,8 @@ namespace Standard.Licensing
         /// </summary>
         public string Name
         {
-            get { return GetTag("Name"); }
-            set { SetTag("Name", value); }
+            get { return GetTag(nameof(Name)) ?? string.Empty; }
+            set { SetTag(nameof(Name), value); }
         }
         
         /// <summary>
@@ -51,8 +51,8 @@ namespace Standard.Licensing
         /// </summary>
         public string Company
         {
-            get { return GetTag("Company"); }
-            set { SetTag("Company", value); }
+            get { return GetTag(nameof(Company)) ?? string.Empty; }
+            set { SetTag(nameof(Company), value); }
         }
 
         /// <summary>
@@ -60,8 +60,8 @@ namespace Standard.Licensing
         /// </summary>
         public string Email
         {
-            get { return GetTag("Email"); }
-            set { SetTag("Email", value); }
+            get { return GetTag(nameof(Email)) ?? string.Empty; }
+            set { SetTag(nameof(Email), value); }
         }
     }
 }

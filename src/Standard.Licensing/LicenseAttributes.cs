@@ -40,7 +40,7 @@ namespace Standard.Licensing
         /// <summary>
         /// Initializes a new instance of the <see cref="LicenseAttributes"/> class.
         /// </summary>
-        internal LicenseAttributes(XElement xmlData, XName childName)
+        internal LicenseAttributes(XElement? xmlData, XName childName)
         {
             this.xmlData = xmlData ?? new XElement("null");
             this.childName = childName;
@@ -76,7 +76,7 @@ namespace Standard.Licensing
         {
             var element =
                 xmlData.Elements(childName)
-                    .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == key);
+                    .FirstOrDefault(e => e.Attribute("name") is var nameAttr && nameAttr is not null && nameAttr.Value == key);
 
             if (element != null)
                 element.Remove();
@@ -96,7 +96,7 @@ namespace Standard.Licensing
         /// </summary>
         /// <param name="key">The key of the element.</param>
         /// <returns>The value of the element if available; otherwise null.</returns>
-        public virtual string Get(string key)
+        public virtual string? Get(string key)
         {
             return GetChildTag(key);
         }
@@ -107,7 +107,8 @@ namespace Standard.Licensing
         /// <returns>A dictionary of all elements in this collection.</returns>
         public virtual IDictionary<string, string> GetAll()
         {
-            return xmlData.Elements(childName).ToDictionary(e => e.Attribute("name").Value, e => e.Value);
+            return xmlData.Elements(childName).Where(e => e.Attribute("name") is not null)
+                .Select(e => (NameAttr: e.Attribute("name"), e.Value)).ToDictionary(e => e.NameAttr!.Value, e => e.Value);
         }
 
         /// <summary>
@@ -118,7 +119,8 @@ namespace Standard.Licensing
         /// <returns>true if the collection contains this element; otherwise false.</returns>
         public virtual bool Contains(string key)
         {
-            return xmlData.Elements(childName).Any(e => e.Attribute("name") != null && e.Attribute("name").Value == key);
+            return xmlData.Elements(childName).Any(e => e.Attribute("name") is var nameAttr
+            && nameAttr is not null && nameAttr.Value == key);
         }
 
         /// <summary>
@@ -129,7 +131,8 @@ namespace Standard.Licensing
         /// <returns>true if the collection contains all specified elements; otherwise false.</returns>
         public virtual bool ContainsAll(string[] keys)
         {
-            return xmlData.Elements(childName).All(e => e.Attribute("name") != null && keys.Contains(e.Attribute("name").Value));
+            return xmlData.Elements(childName).All(e => e.Attribute("name") is var nameAttr
+            && nameAttr is not null && keys.Contains(nameAttr.Value));
         }
 
         protected virtual void SetTag(string name, string value)
@@ -150,9 +153,9 @@ namespace Standard.Licensing
         {
             var element =
                 xmlData.Elements(childName)
-                    .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == name);
+                    .FirstOrDefault(e => e.Attribute("name") is var nameAttr && nameAttr is not null && nameAttr.Value == name);
 
-            if (element == null)
+            if (element is null)
             {
                 element = new XElement(childName);
                 element.Add(new XAttribute("name", name));
@@ -163,19 +166,15 @@ namespace Standard.Licensing
                 element.Value = value;
         }
 
-        protected virtual string GetTag(string name)
-        {
-            var element = xmlData.Element(name);
-            return element != null ? element.Value : null;
-        }
+        protected virtual string? GetTag(string name) => xmlData.Element(name)?.Value;
 
-        protected virtual string GetChildTag(string name)
+        protected virtual string? GetChildTag(string name)
         {
             var element =
                 xmlData.Elements(childName)
-                    .FirstOrDefault(e => e.Attribute("name") != null && e.Attribute("name").Value == name);
+                    .FirstOrDefault(e => e.Attribute("name") is var nameAttr && nameAttr is not null && nameAttr.Value == name);
 
-            return element != null ? element.Value : null;
+            return element?.Value;
         }
     }
 }

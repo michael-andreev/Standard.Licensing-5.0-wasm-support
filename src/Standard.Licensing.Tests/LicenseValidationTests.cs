@@ -93,14 +93,13 @@ namespace Standard.Licensing.Tests
                 .AssertValidLicense().ToList();
 
             Assert.That(validationResults, Is.Not.Null);
-            Assert.That(validationResults.Count(), Is.EqualTo(1));
+            Assert.That(validationResults.Count, Is.EqualTo(1));
             Assert.That(validationResults.FirstOrDefault(), Is.TypeOf<InvalidSignatureValidationFailure>());
         }
 
         [Test]
         public void Can_Validate_Expired_ExpirationDate()
         {
-            var publicKey = "";
             var licenseData = @"<License>
                                   <Id>77d4c193-6088-4c64-9663-ed7398ae8c1a</Id>
                                   <Type>Trial</Type>
@@ -123,7 +122,7 @@ namespace Standard.Licensing.Tests
                 .AssertValidLicense().ToList();
 
             Assert.That(validationResults, Is.Not.Null);
-            Assert.That(validationResults.Count(), Is.EqualTo(1));
+            Assert.That(validationResults.Count, Is.EqualTo(1));
             Assert.That(validationResults.FirstOrDefault(), Is.TypeOf<LicenseExpiredValidationFailure>());
 
         }
@@ -157,16 +156,16 @@ namespace Standard.Licensing.Tests
             var validationResults = license
                 .Validate()
                 .AssertThat(lic => lic.ProductFeatures.Contains("Sales Module"),
-                            new GeneralValidationFailure {Message = "Sales Module not licensed!"})
+                            new GeneralValidationFailure(Message: "Sales Module not licensed!"))
                 .And()
                 .AssertThat(lic => lic.AdditionalAttributes.Get("Assembly Signature") == "123456789",
-                            new GeneralValidationFailure {Message = "Assembly Signature does not match!"})
+                            new GeneralValidationFailure(Message: "Assembly Signature does not match!"))
                 .And()
                 .Signature(publicKey)
                 .AssertValidLicense().ToList();
 
             Assert.That(validationResults, Is.Not.Null);
-            Assert.That(validationResults.Count(), Is.EqualTo(0));
+            Assert.That(validationResults.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -186,7 +185,7 @@ namespace Standard.Licensing.Tests
                 .AssertValidLicense().ToList();
 
             Assert.That(validationResults, Is.Not.Null);
-            Assert.That(validationResults.Count(), Is.EqualTo(1));
+            Assert.That(validationResults.Count, Is.EqualTo(1));
             Assert.That(validationResults.FirstOrDefault(), Is.TypeOf<InvalidSignatureValidationFailure>());
 
         }

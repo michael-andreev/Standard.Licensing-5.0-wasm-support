@@ -31,7 +31,7 @@ namespace Standard.Licensing.Validation
     internal class ValidationChainBuilder : IStartValidationChain, IValidationChain
     {
         private readonly Queue<ILicenseValidator> validators;
-        private ILicenseValidator currentValidatorChain;
+        private ILicenseValidator? currentValidatorChain;
         private readonly License license;
 
         public ValidationChainBuilder(License license)
@@ -47,8 +47,7 @@ namespace Standard.Licensing.Validation
 
         public void CompleteValidatorChain()
         {
-            if (currentValidatorChain == null)
-                return;
+            if (currentValidatorChain is null) return;
 
             validators.Enqueue(currentValidatorChain);
             currentValidatorChain = null;
@@ -56,6 +55,7 @@ namespace Standard.Licensing.Validation
 
         public ICompleteValidationChain When(Predicate<License> predicate)
         {
+            if (currentValidatorChain is null) throw new NullReferenceException("Validation chain has not been started.");
             currentValidatorChain.ValidateWhen = predicate;
             return this;
         }
@@ -66,23 +66,24 @@ namespace Standard.Licensing.Validation
             return this;
         }
 
-        public IEnumerable<IValidationFailure> AssertValidLicense()
+        public IEnumerable<ValidationFailure> AssertValidLicense()
         {
             CompleteValidatorChain();
 
             while (validators.Count > 0)
             {
                 var validator = validators.Dequeue();
-                if (validator.ValidateWhen != null && !validator.ValidateWhen(license))
+                if (validator.ValidateWhen is not null && !validator.ValidateWhen(license))
                     continue;
 
                 if (!validator.Validate(license))
                     yield return validator.FailureResult
-                                 ?? new GeneralValidationFailure
-                                        {
-                                            Message = "License validation failed!"
-                                        };
+                                 ?? new GeneralValidationFailure(
+                                            Message : "License validation failed!"
+                                        );
             }
         }
+
+        string IFluentInterface.ToString() => ToString() ?? string.Empty;
     }
 }

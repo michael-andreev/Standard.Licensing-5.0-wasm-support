@@ -53,15 +53,15 @@ namespace Standard.Licensing.Validation
         /// <returns>An instance of <see cref="IStartValidationChain"/>.</returns>
         public static IValidationChain ExpirationDate(this IStartValidationChain validationChain)
         {
-            var validationChainBuilder = (validationChain as ValidationChainBuilder);
+            if (validationChain is not ValidationChainBuilder validationChainBuilder)
+                throw new ArgumentNullException(nameof(validationChain), "Supplied argument is not a valid ValidationChainBuilder");
+
             var validator = validationChainBuilder.StartValidatorChain();
             validator.Validate = license => license.Expiration > DateTime.Now;
 
-            validator.FailureResult = new LicenseExpiredValidationFailure()
-            {
-                Message = "Licensing for this product has expired!",
-                HowToResolve = @"Your license is expired. Please contact your distributor/vendor to renew the license."
-            };
+            validator.FailureResult = new LicenseExpiredValidationFailure(
+                Message: "Licensing for this product has expired!",
+                HowToResolve: @"Your license is expired. Please contact your distributor/vendor to renew the license.");
 
             return validationChainBuilder;
         }
@@ -75,18 +75,10 @@ namespace Standard.Licensing.Validation
         /// <returns>An instance of <see cref="IStartValidationChain"/>.</returns>
         public static IValidationChain ProductBuildDate(this IStartValidationChain validationChain, Assembly[] assemblies)
         {
-            var validationChainBuilder = (validationChain as ValidationChainBuilder);
+            if (validationChain is not ValidationChainBuilder validationChainBuilder)
+                throw new ArgumentNullException(nameof(validationChain), "Supplied argument is not a valid ValidationChainBuilder");
+
             var validator = validationChainBuilder.StartValidatorChain();
-
-#if !NEW_REFLECTION
-
-            validator.Validate = license => assemblies.All(
-                    asm =>
-                    asm.GetCustomAttributes(typeof (AssemblyBuildDateAttribute), false)
-                       .Cast<AssemblyBuildDateAttribute>()
-                       .All(a => a.BuildDate < license.Expiration));
-
-#else
 
             validator.Validate = license => assemblies.All(
                     asm =>
@@ -94,13 +86,9 @@ namespace Standard.Licensing.Validation
                        .Cast<AssemblyBuildDateAttribute>()
                        .All(a => a.BuildDate < license.Expiration));
 
-#endif
-
-            validator.FailureResult = new LicenseExpiredValidationFailure()
-            {
-                Message = "Licensing for this product has expired!",
-                HowToResolve = @"Your license is expired. Please contact your distributor/vendor to renew the license."
-            };
+            validator.FailureResult = new LicenseExpiredValidationFailure(
+                Message: "Licensing for this product has expired!",
+                HowToResolve: @"Your license is expired. Please contact your distributor/vendor to renew the license.");
 
             return validationChainBuilder;
         }
@@ -110,11 +98,13 @@ namespace Standard.Licensing.Validation
         /// </summary>
         /// <param name="validationChain">The current <see cref="IStartValidationChain"/>.</param>
         /// <param name="predicate">The predicate to determine of the <see cref="License"/> is valid.</param>
-        /// <param name="failure">The <see cref="IValidationFailure"/> will be returned to the application when the <see cref="ILicenseValidator"/> fails.</param>
+        /// <param name="failure">The <see cref="ValidationFailure"/> will be returned to the application when the <see cref="ILicenseValidator"/> fails.</param>
         /// <returns>An instance of <see cref="IStartValidationChain"/>.</returns>
-        public static IValidationChain AssertThat(this IStartValidationChain validationChain, Predicate<License> predicate, IValidationFailure failure)
+        public static IValidationChain AssertThat(this IStartValidationChain validationChain, Predicate<License> predicate, ValidationFailure failure)
         {
-            var validationChainBuilder = (validationChain as ValidationChainBuilder);
+            if (validationChain is not ValidationChainBuilder validationChainBuilder)
+                throw new ArgumentNullException(nameof(validationChain), "Supplied argument is not a valid ValidationChainBuilder");
+
             var validator = validationChainBuilder.StartValidatorChain();
 
             validator.Validate = predicate;
@@ -131,15 +121,14 @@ namespace Standard.Licensing.Validation
         /// <returns>An instance of <see cref="IStartValidationChain"/>.</returns>
         public static IValidationChain Signature(this IStartValidationChain validationChain, string publicKey)
         {
-            var validationChainBuilder = (validationChain as ValidationChainBuilder);
+            if (validationChain is not ValidationChainBuilder validationChainBuilder)
+                throw new ArgumentNullException(nameof(validationChain), "Supplied argument is not a valid ValidationChainBuilder");
+
             var validator = validationChainBuilder.StartValidatorChain();
             validator.Validate = license => license.VerifySignature(publicKey);
 
-            validator.FailureResult = new InvalidSignatureValidationFailure()
-            {
-                Message = "License signature validation error!",
-                HowToResolve = @"The license signature and data does not match. This usually happens when a license file is corrupted or has been altered."
-            };
+            validator.FailureResult = new InvalidSignatureValidationFailure("License signature validation error!",
+                @"The license signature and data does not match. This usually happens when a license file is corrupted or has been altered.");
 
             return validationChainBuilder;
         }

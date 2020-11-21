@@ -98,7 +98,7 @@ namespace Standard.Licensing
         /// <summary>
         /// Gets or sets the product features of this <see cref="License"/>.
         /// </summary>
-        public LicenseAttributes ProductFeatures
+        public LicenseAttributes? ProductFeatures
         {
             get
             {
@@ -121,7 +121,7 @@ namespace Standard.Licensing
         /// <summary>
         /// Gets or sets the <see cref="Customer"/> of this <see cref="License"/>.
         /// </summary>
-        public Customer Customer
+        public Customer? Customer
         {
             get
             {
@@ -144,7 +144,7 @@ namespace Standard.Licensing
         /// <summary>
         /// Gets or sets the additional attributes of this <see cref="License"/>.
         /// </summary>
-        public LicenseAttributes AdditionalAttributes
+        public LicenseAttributes? AdditionalAttributes
         {
             get
             {
@@ -186,10 +186,7 @@ namespace Standard.Licensing
         /// Gets the digital signature of this license.
         /// </summary>
         /// <remarks>Use the <see cref="License.Sign"/> method to compute a signature.</remarks>
-        public string Signature
-        {
-            get { return GetTag("Signature"); }
-        }
+        public string Signature => GetTag(nameof(Signature)) ?? string.Empty;
 
         /// <summary>
         /// Compute a signature and sign this <see cref="License"/> with the provided key.
@@ -354,21 +351,14 @@ namespace Standard.Licensing
         private void SetTag(string name, string value)
         {
             var element = xmlData.Element(name);
-
-            if (element == null)
+            if (element is null)
             {
                 element = new XElement(name);
                 xmlData.Add(element);
             }
-
-            if (value != null)
-                element.Value = value;
+            element.Value = value;
         }
 
-        private string GetTag(string name)
-        {
-            var element = xmlData.Element(name);
-            return element != null ? element.Value : null;
-        }
+        private string? GetTag(string name) => xmlData.Element(name)?.Value;
     }
 }

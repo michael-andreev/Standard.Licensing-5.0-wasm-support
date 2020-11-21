@@ -28,16 +28,5 @@ namespace Standard.Licensing.Validation
     /// <summary>
     /// Represents a general validation failure.
     /// </summary>
-    public class GeneralValidationFailure : IValidationFailure
-    {
-        /// <summary>
-        /// Gets or sets a message that describes the validation failure.
-        /// </summary>
-        public string Message { get; set; }
-
-        /// <summary>
-        /// Gets or sets a message that describes how to recover from the validation failure.
-        /// </summary>
-        public string HowToResolve { get; set; }
-    }
+    public record GeneralValidationFailure(string Message, string? HowToResolve = null) : ValidationFailure(Message, HowToResolve);
 }

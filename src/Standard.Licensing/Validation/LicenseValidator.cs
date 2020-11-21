@@ -36,18 +36,18 @@ namespace Standard.Licensing.Validation
         /// Gets or sets the predicate to determine if the <see cref="License"/>
         /// is valid.
         /// </summary>
-        public Predicate<License> Validate { get; set; }
+        public Predicate<License> Validate { get; set; } = (license) => true;
 
         /// <summary>
         /// Gets or sets the predicate to determine if the <see cref="ILicenseValidator"/>
         /// should be executed.
         /// </summary>
-        public Predicate<License> ValidateWhen { get; set; }
+        public Predicate<License>? ValidateWhen { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="IValidationFailure"/> result. The <see cref="IValidationFailure"/>
+        /// Gets or sets the <see cref="ValidationFailure"/> result. The <see cref="ValidationFailure"/>
         /// will be returned to the application when the <see cref="ILicenseValidator"/> fails.
         /// </summary>
-        public IValidationFailure FailureResult { get; set; }
+        public ValidationFailure? FailureResult { get; set; }
     }
 }
